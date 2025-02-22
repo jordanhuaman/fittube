@@ -1,8 +1,12 @@
 import express from 'express'
 import { getVideo } from './controllers/vide.controller'
 import { connecToDatabase } from './utils/mongodb_connection'
+import sendMessageToVideoStorage from './controllers/directmessaing.controller'
 
 const app = express()
+
+app.use(express.json())
+
 const PORT = process.env.PORT || 5000
 if (!PORT) {
   throw new Error('Please specity a port')
@@ -14,6 +18,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/video', getVideo)
+app.get("/direct_message", sendMessageToVideoStorage)
 
 connecToDatabase()
   .then((e) => {

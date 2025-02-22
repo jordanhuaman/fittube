@@ -9,7 +9,6 @@ const VIDEO_STORAGE_HOST = process.env.VIDEO_STORAGE_HOST || "localhost";
 const VIDEO_STORAGE_PORT = process.env.VIDEO_STORAGE_PORT || 5001;
 
 const getVideo = async (req: Request, res: Response) => {
-
   const videoID = new ObjectId(req.query.id as string);
   const videoRecord = await getCollection("videos").findOne({ _id: videoID })
 

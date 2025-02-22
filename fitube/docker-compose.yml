@@ -20,9 +20,9 @@ services:
       - ./azure-storage/src:/usr/src/app/src:z
       # - ./azure-storage/videos:/usr/src/app/videos:z
     ports:
-      - "4001:4001"
+      - "4001:80"
     environment:
-      - PORT=4001
+      - PORT=80
       - sotrage_name={storage_name}
       - storage_key={storage_key}
     restart: "no"
@@ -36,9 +36,9 @@ services:
       - /tmp/video-streaming/npm-cache:/root/.npm:z
       - ./video-streaming/src:/usr/src/app/src:z
     ports:
-      - "4002:4002"
+      - "4002:80"
     environment:
-    - PORT=4002
+    - PORT=80
     - VIDEO_STORAGE_HOST=video-storage
     - VIDEO_STORAGE_PORT=4001
     # - DBHOST=mongodb://db:27017
