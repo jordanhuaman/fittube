@@ -1,0 +1,47 @@
+version: "3"
+services:
+  db:
+    image: mongo
+    container_name: db
+    ports:
+      - "4000:27017"
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+  azure-storage:
+    image: azure-storage
+    build:
+      context: ./azure-storage
+      dockerfile: Dockerfile-dev
+    container_name: video-storage
+    volumes:
+      - /tmp/azure-storage/npm-cache:/root/.npm:z
+      - ./azure-storage/src:/usr/src/app/src:z
+      # - ./azure-storage/videos:/usr/src/app/videos:z
+    ports:
+      - "4001:4001"
+    environment:
+      - PORT=4001
+      - sotrage_name={storage_name}
+      - storage_key={storage_key}
+    restart: "no"
+  video-streaming:
+    image: video-streaming-v2
+    build: 
+      context: ./video-streaming
+      dockerfile: Dockerfile-dev
+    container_name: video-streaming-v2.0
+    volumes:
+      - /tmp/video-streaming/npm-cache:/root/.npm:z
+      - ./video-streaming/src:/usr/src/app/src:z
+    ports:
+      - "4002:4002"
+    environment:
+    - PORT=4002
+    - VIDEO_STORAGE_HOST=video-storage
+    - VIDEO_STORAGE_PORT=4001
+    # - DBHOST=mongodb://db:27017
+    - DBHOST=mongodb://root:example@db:27017
+    - DBNAME=video-streaming
+    restart: "no"

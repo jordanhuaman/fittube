@@ -1,0 +1,8 @@
+.history/
+node_modules/
+chapter-*/
+*/public
+.env
+/*/.env
+/*/*/.env
+docker-compose-dev.yml
