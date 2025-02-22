@@ -1,23 +1,21 @@
-import express, { Router } from "express"
+import { Request, Response } from "express"
 import azure from "azure-storage"
 
-const appRouter = Router();
-
 const STORAGE_ACCOUNT_NAME = process.env.sotrage_name as string
-const STORAGE_ACCOUNT_KEY = process.env.storage_key  as string
+const STORAGE_ACCOUNT_KEY = process.env.storage_key as string
 
 const createBlobService = () => {
   return azure.createBlobService(STORAGE_ACCOUNT_NAME, STORAGE_ACCOUNT_KEY)
 }
-
-appRouter.get("/", (req, res) => {
+const testStatusApp = (req: Request, res: Response) => {
   return res.json({ msg: "go to -> video?path=SampleVideo_1280x720_1mb.mp4" })
-})
 
-appRouter.get('/video', (req, res) => {
+}
+
+const getVideo = (req: Request, res: Response) => {
   const videoPath = req.query.path as string
   console.log('from azure-storage -> videoPath: ', videoPath)
-  
+
   const blobService = createBlobService()
   const containerName = "videos"
 
@@ -38,6 +36,6 @@ appRouter.get('/video', (req, res) => {
     })
     stream.pipe(res) // ✅ Conecta el stream directamente a la respuesta
   })
-})
+}
 
-export default appRouter;
+export { testStatusApp, getVideo };
