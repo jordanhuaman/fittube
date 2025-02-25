@@ -45,3 +45,13 @@ services:
     - DBHOST=mongodb://root:example@db:27017
     - DBNAME=video-streaming
     restart: "no"
+  rabbit:
+    image: rabbitmq:latest
+    container_name: rabbit
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    expose:
+      - "5672"
+      - "15672"
+    restart: always
